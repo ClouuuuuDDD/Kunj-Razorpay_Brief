@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Strategic Outreach | Kunj Harjai</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS for layout utility -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        :root {
+            /* Fixed Neutrals */
+            --dark: #1A1A1A;
+            --paper: #F4F4F4;
+            --white: #FFFFFF;
+            --warning: #F59E0B;
+            --amber: #F59E0B;
+            
+            /* Brand Adaptable Tokens (Razorpay Specific) */
+            --primary: #3399FF;   /* Razorpay Blue */
+            --secondary: #1A1A1A; /* Razorpay Dark */
+            --accent: #22C55E;    /* Base Green Fallback */
+            
+            /* Typography */
+            --font-display: 'Bricolage Grotesque', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Visual Rules */
+            --border-width: 4px;
+            --shadow-offset: 6px;
+            --radius: 0px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--paper);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+        }
+
+        /* Brutalist Utilities */
+        .b-border { border: var(--border-width) solid var(--dark); }
+        .b-shadow { box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--dark); transition: all 0.2s linear; }
+        .b-shadow-hover:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px var(--dark); }
+        .b-shadow-active:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px var(--dark); }
+        .no-radius { border-radius: var(--radius); }
+
+        .bg-primary { background-color: var(--primary); }
+        .bg-secondary { background-color: var(--secondary); }
+        .bg-accent { background-color: var(--accent); }
+        .bg-warning { background-color: var(--warning); }
+        .bg-paper { background-color: var(--paper); }
+        .bg-dark { background-color: var(--dark); }
+        .bg-white { background-color: var(--white); }
+        
+        .text-primary { color: var(--primary); }
+        .text-dark { color: var(--dark); }
+        .text-white { color: var(--white); }
+        .text-paper { color: var(--paper); }
+        
+        .border-primary { border-color: var(--primary); }
+        .border-secondary { border-color: var(--secondary); }
+        .border-accent { border-color: var(--accent); }
+
+        /* Marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            background: var(--dark);
+            color: var(--white);
+            padding: 12px 0;
+            border-top: var(--border-width) solid var(--dark);
+            border-bottom: var(--border-width) solid var(--dark);
+            display: flex;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-family: var(--font-body);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Stamps */
+        .stamp {
+            position: absolute;
+            font-family: var(--font-display);
+            font-weight: 800;
+            border: 3px solid var(--dark);
+            padding: 4px 12px;
+            background: var(--accent);
+            color: var(--dark);
+            box-shadow: 4px 4px 0px var(--dark);
+            transform: rotate(-10deg);
+            z-index: 10;
+        }
+
+        /* Animations for Charts */
+        .chart-bar, .chart-fill {
+            transition: all 0.1s linear;
+        }
+        
+        /* Pie Chart */
+        .pie-chart {
+            background: conic-gradient(
+                var(--primary) 0% 0%, 
+                var(--secondary) 0% 0%, 
+                var(--accent) 0% 0%, 
+                var(--paper) 0% 0%
+            );
+            border-radius: 50%;
+            transition: background 0.5s linear;
+        }
+        
+        .pie-chart.active {
+            background: conic-gradient(
+                var(--primary) 0% 35%, 
+                var(--secondary) 35% 65%, 
+                var(--accent) 65% 90%, 
+                var(--paper) 90% 100%
+            );
+        }
+
+        /* Matrix Point styling */
+        .matrix-point {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--dark);
+            transform: translate(-50%, 50%);
+            opacity: 0;
+            transition: opacity 0.1s linear, transform 0.2s ease;
+        }
+        .matrix-point.active {
+            opacity: 1;
+        }
+        .matrix-label {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 8px;
+            background: var(--white);
+            border: 2px solid var(--dark);
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+            z-index: 20;
+        }
+
+        /* Layout constraints */
+        .section-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .section-container { padding: 3rem 1rem; }
+            .stamp { font-size: 12px; }
+            .matrix-label { font-size: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV/HEADER -->
+    <nav class="fixed top-0 w-full bg-paper border-b-4 border-dark z-50 flex justify-between items-center p-4">
+        <div class="font-display font-bold text-xl flex items-center gap-2">
+            <div class="w-6 h-6 bg-primary b-border"></div>
+            RAZORPAY <span class="hidden md:inline">| PRODUCT INTERNSHIP</span>
+        </div>
+        <div class="text-sm font-bold border-2 border-dark px-3 py-1 bg-white b-shadow">SUMMER 2026</div>
+    </nav>
+
+    <!-- SLIDE 1: INTRO & HOOK -->
+    <section class="section-container mt-12" id="slide-1">
+        <div class="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left: Narrative -->
+            <div class="space-y-6">
+                <h1 class="text-4xl md:text-6xl font-display leading-tight bg-white p-6 b-border b-shadow">
+                    Moving From Gateway to <br><span class="text-primary bg-dark px-2">Revenue Ops.</span>
+                </h1>
+                <div class="bg-white p-6 b-border b-shadow space-y-4">
+                    <p class="font-bold text-xl">Hi, I'm Kunj — and here's what stands out about Razorpay:</p>
+                    <p class="text-gray-700 leading-relaxed">
+                        You've built India's most comprehensive financial infrastructure with <strong class="text-dark">100,000+ businesses</strong>, <strong class="text-dark">$100B+ annualized volume</strong>, and a developer-first <strong>API</strong>. 
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        With <strong>RazorpayX expansion</strong>, <strong>cross-border growth</strong>, and an <strong>AI-driven routing focus</strong>, you're moving from payment gateway to revenue operations platform. The next unlock is leveraging your data + liquidity to offer embedded credit, intelligent success optimization, and global enablement — turning transactions into a growth engine.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Brutalist Impact Bar Chart -->
+            <div class="bg-white p-8 b-border b-shadow relative">
+                <div class="stamp bg-accent" style="top: -15px; right: -20px; transform: rotate(15deg);">INFRASTRUCTURE LEADER</div>
+                <h2 class="font-display text-2xl mb-8 border-b-4 border-dark pb-2">Platform Scale</h2>
+                
+                <div class="space-y-6">
+                    <!-- Bar 1 -->
+                    <div class="relative h-16 w-full bg-paper b-border">
+                        <div class="absolute top-0 left-0 h-full bg-primary b-border border-l-0 border-t-0 border-b-0" style="width: 100%;"></div>
+                        <div class="absolute inset-0 flex items-center px-4 font-bold text-white uppercase text-sm" style="mix-blend-mode: difference;">
+                            100,000+ Businesses
+                        </div>
+                    </div>
+                    
+                    <!-- Bar 2 -->
+                    <div class="relative h-16 w-full bg-paper b-border">
+                        <div class="absolute top-0 left-0 h-full bg-secondary b-border border-l-0 border-t-0 border-b-0" style="width: 70%;"></div>
+                        <div class="absolute inset-0 flex items-center px-4 font-bold text-white uppercase text-sm" style="mix-blend-mode: difference;">
+                            $100B+ Annual Volume
+                        </div>
+                    </div>
+                    
+                    <!-- Bar 3 -->
+                    <div class="relative h-16 w-full bg-paper b-border">
+                        <div class="absolute top-0 left-0 h-full bg-accent b-border border-l-0 border-t-0 border-b-0" style="width: 50%;"></div>
+                        <div class="absolute inset-0 flex items-center px-4 font-bold text-dark uppercase text-sm">
+                            300+ Payment Methods
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            RAZORPAYX CORPORATE CARDS Q1 2025 &bull; CROSS-BORDER USD/GBP/EUR EXPANSION Q2 2025 &bull; AI PAYMENT ROUTING LAUNCH &bull; 100K+ BUSINESSES &bull; $100B+ VOLUME &bull; RAZORPAYX CORPORATE CARDS Q1 2025 &bull; CROSS-BORDER USD/GBP/EUR EXPANSION Q2 2025 &bull; AI PAYMENT ROUTING LAUNCH &bull; 100K+ BUSINESSES &bull; $100B+ VOLUME &bull;
+        </div>
+    </div>
+
+    <!-- SLIDE 2: USER ANALYSIS -->
+    <section class="section-container bg-primary" id="slide-2">
+        <div class="max-w-7xl mx-auto w-full">
+            
+            <div class="bg-white p-6 b-border b-shadow mb-8">
+                <h2 class="font-display text-3xl mb-2 uppercase">User Analysis: Who Builds, What They Need, How to Win</h2>
+                <p class="font-bold text-lg mb-2">Razorpay's base is SME-led, SaaS/E-commerce-heavy, and API-driven.</p>
+                <p class="text-sm">~45% of clients are <₹50 Cr revenue brands; ~35% operate in SaaS/Subscription. <strong>Payment success rate is the #1 priority (65%).</strong> <br><span class="text-primary font-bold">Action:</span> Tailor infrastructure by vertical: smart retry for SaaS, fraud optimization for e-comm, instant settlement for marketplaces.</p>
+            </div>
+
+            <!-- 2x2 Data Wall Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Chart 1: Vertical Mix Angular Pie -->
+                <div class="bg-white p-6 b-border b-shadow flex flex-col items-center relative overflow-hidden">
+                    <h3 class="font-display text-lg mb-6 w-full border-b-2 border-dark pb-2">Vertical Mix</h3>
+                    <div class="relative w-48 h-48 pie-chart b-border chart-animate">
+                        <div class="absolute inset-0 m-auto w-24 h-24 bg-white b-border rounded-full flex items-center justify-center font-display text-xs text-center z-10 font-bold">VERTICAL<br>MIX</div>
+                    </div>
+                    <div class="w-full grid grid-cols-2 gap-2 mt-6 text-xs font-bold uppercase">
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 bg-primary b-border"></div>SaaS: 35%</div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 bg-secondary b-border"></div>E-comm: 30%</div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 bg-accent b-border"></div>Marketplace: 25%</div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 bg-paper b-border"></div>Other: 10%</div>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Client Size Bar Chart -->
+                <div class="bg-white p-6 b-border b-shadow flex flex-col">
+                    <h3 class="font-display text-lg mb-6 border-b-2 border-dark pb-2">Client Size Proxy</h3>
+                    <div class="flex-grow flex items-end justify-around gap-4 h-48 border-b-4 border-dark pb-0 pt-8">
+                        <div class="w-1/3 flex flex-col items-center justify-end h-full relative">
+                            <div class="font-bold text-xs mb-2 text-center w-full absolute -top-6"><₹50 Cr<br>45%</div>
+                            <div class="w-full bg-paper b-border chart-bar" data-height="45%" style="height: 0%;"></div>
+                        </div>
+                        <div class="w-1/3 flex flex-col items-center justify-end h-full relative">
+                            <div class="font-bold text-xs mb-2 text-center w-full absolute -top-6">₹50-500 Cr<br>40%</div>
+                            <div class="w-full bg-accent b-border chart-bar" data-height="70%" style="height: 0%;"></div>
+                        </div>
+                        <div class="w-1/3 flex flex-col items-center justify-end h-full relative">
+                            <div class="font-bold text-xs mb-2 text-center w-full absolute -top-6">₹500 Cr+<br>15%</div>
+                            <div class="w-full bg-primary b-border chart-bar" data-height="100%" style="height: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Pain Priority Histogram -->
+                <div class="bg-white p-6 b-border b-shadow flex flex-col">
+                    <h3 class="font-display text-lg mb-4 border-b-2 border-dark pb-2">Pain Priority</h3>
+                    <div class="flex flex-col gap-4 justify-center h-full border-l-4 border-dark pl-4">
+                        <div class="w-full relative h-10">
+                            <div class="absolute h-full bg-primary b-border chart-fill z-0" data-width="65%" style="width: 0%;"></div>
+                            <div class="absolute inset-0 flex justify-between items-center px-3 font-bold text-xs z-10 mix-blend-difference text-white">
+                                <span>Success Rate</span><span>65%</span>
+                            </div>
+                        </div>
+                        <div class="w-full relative h-10">
+                            <div class="absolute h-full bg-accent b-border chart-fill z-0" data-width="60%" style="width: 0%;"></div>
+                            <div class="absolute inset-0 flex justify-between items-center px-3 font-bold text-xs z-10 text-dark">
+                                <span>Working Capital</span><span>60%</span>
+                            </div>
+                        </div>
+                        <div class="w-full relative h-10">
+                            <div class="absolute h-full bg-secondary b-border chart-fill z-0" data-width="50%" style="width: 0%;"></div>
+                            <div class="absolute inset-0 flex justify-between items-center px-3 font-bold text-xs z-10 text-white">
+                                <span>Fraud/Chargebacks</span><span>50%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart 4: Segment Matrix -->
+                <div class="bg-white p-6 b-border b-shadow flex flex-col relative">
+                    <h3 class="font-display text-lg mb-4 border-b-2 border-dark pb-2">Segment Matrix</h3>
+                    
+                    <div class="relative flex-grow border-l-4 border-b-4 border-dark h-48 mt-4">
+                        <!-- Axes Labels -->
+                        <div class="absolute -left-8 top-0 h-full flex flex-col justify-end pb-8 pointer-events-none">
+                            <div class="relative w-8 h-24">
+                                <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap text-[10px] font-bold uppercase text-gray-600">Liquidity Need &rarr;</span>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-6 left-0 w-full flex justify-start pointer-events-none">
+                            <span class="text-[10px] font-bold uppercase text-gray-600">Integration Complexity &rarr;</span>
+                        </div>
+                        
+                        <!-- Markers -->
+                        <div class="matrix-point bg-primary matrix-animate" style="left: 40%; bottom: 30%; transition-delay: 100ms;">
+                            <div class="matrix-label">SaaS Builders</div>
+                        </div>
+                        <div class="matrix-point bg-secondary matrix-animate" style="left: 60%; bottom: 50%; transition-delay: 200ms;">
+                            <div class="matrix-label">E-commerce</div>
+                        </div>
+                        <div class="matrix-point bg-accent matrix-animate" style="left: 70%; bottom: 70%; transition-delay: 300ms;">
+                            <div class="matrix-label">Marketplaces</div>
+                        </div>
+                        <div class="matrix-point bg-warning matrix-animate" style="left: 85%; bottom: 85%; transition-delay: 400ms;">
+                            <div class="matrix-label">Cross-Border</div>
+                        </div>
+
+                        <!-- Arrow -->
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" style="z-index: 1;">
+                            <path d="M 40 70 L 60 50 L 70 30 L 85 15" fill="none" stroke="black" stroke-width="2" stroke-dasharray="4 4" vector-effect="non-scaling-stroke" class="matrix-animate opacity-0" style="transition-delay: 500ms;"></path>
+                        </svg>
+                        <div class="absolute bottom-2 right-2 text-[10px] font-bold bg-white px-2 py-1 b-border z-10 matrix-animate opacity-0" style="transition-delay: 600ms;">ADOPTION PATH &nearr;</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: COMPETITOR LANDSCAPE -->
+    <section class="section-container bg-paper" id="slide-3">
+        <div class="max-w-6xl mx-auto w-full">
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Text Area -->
+                <div class="md:col-span-1 space-y-6">
+                    <h2 class="font-display text-4xl bg-white p-4 b-border b-shadow">Competitor Landscape</h2>
+                    <div class="bg-white p-6 b-border b-shadow text-dark">
+                        <p class="font-bold mb-4">Razorpay leads on Infrastructure Breadth and Developer Experience.</p>
+                        <p class="text-sm mb-4">Cashfree wins on API simplicity. PhonePe dominates UPI volume. Stripe leads global scale.</p>
+                        <p class="text-sm font-bold p-3 bg-paper b-border">Razorpay's Edge: Unified stack (Gateway + X + Forge) + RazorpayX liquidity + India-first compliance.</p>
+                    </div>
+
+                    <!-- Feature Snapshot -->
+                    <div class="bg-white p-4 b-border b-shadow flex flex-col gap-2 font-bold text-xs uppercase text-dark">
+                        <div class="flex justify-between items-center p-2 border-b-2 border-dark">
+                            <span>Unified Stack (X+Forge)</span>
+                            <span class="bg-primary text-white px-2 py-1 b-border">RZP ✅</span>
+                        </div>
+                        <div class="flex justify-between items-center p-2 border-b-2 border-dark">
+                            <span>Instant Payouts</span>
+                            <span class="bg-primary text-white px-2 py-1 b-border">RZP ✅</span>
+                        </div>
+                        <div class="flex justify-between items-center p-2">
+                            <span>India Compliance</span>
+                            <span class="bg-primary text-white px-2 py-1 b-border">RZP ✅</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2x2 Matrix -->
+                <div class="md:col-span-2 bg-white p-8 b-border b-shadow flex flex-col relative h-[500px]">
+                    <h3 class="font-display text-xl mb-6 text-dark">Positioning Matrix</h3>
+                    
+                    <div class="relative flex-grow border-l-4 border-b-4 border-dark">
+                        <!-- Quadrant lines -->
+                        <div class="absolute w-full h-[2px] bg-gray-200 top-1/2 left-0 z-0"></div>
+                        <div class="absolute h-full w-[2px] bg-gray-200 left-1/2 top-0 z-0"></div>
+
+                        <!-- Axes Labels -->
+                        <div class="absolute -left-10 top-0 h-full flex flex-col justify-between py-8 pointer-events-none z-10">
+                            <div class="relative w-8 h-32">
+                                <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap text-xs font-bold text-gray-500">Adv. API + Webhooks</span>
+                            </div>
+                            <div class="relative w-8 h-32">
+                                <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap text-xs font-bold text-gray-500">Basic Integration</span>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-8 left-0 w-full flex justify-between px-2 pointer-events-none z-10">
+                            <span class="text-xs font-bold text-gray-500">Single Gateway</span>
+                            <span class="text-xs font-bold text-gray-500">Full Financial Stack</span>
+                        </div>
+
+                        <!-- Data Points -->
+                        <div class="absolute w-6 h-6 bg-secondary b-border z-20 flex justify-center items-center group cursor-pointer" style="left: 30%; bottom: 60%; transform: translate(-50%, 50%);">
+                            <div class="absolute -top-8 bg-white b-border px-2 py-1 text-xs font-bold whitespace-nowrap text-dark">Cashfree</div>
+                        </div>
+                        
+                        <div class="absolute w-6 h-6 bg-warning b-border z-20 flex justify-center items-center group cursor-pointer" style="left: 20%; bottom: 30%; transform: translate(-50%, 50%);">
+                            <div class="absolute -top-8 bg-white b-border px-2 py-1 text-xs font-bold whitespace-nowrap text-dark">PhonePe</div>
+                        </div>
+
+                        <div class="absolute w-6 h-6 bg-paper border-4 border-dark z-20 flex justify-center items-center group cursor-pointer" style="left: 40%; bottom: 40%; transform: translate(-50%, 50%);">
+                            <div class="absolute -top-8 bg-white b-border px-2 py-1 text-xs font-bold whitespace-nowrap text-dark">PayU</div>
+                        </div>
+
+                        <div class="absolute w-6 h-6 bg-dark border-4 border-dark z-20 flex justify-center items-center group cursor-pointer" style="left: 75%; bottom: 80%; transform: translate(-50%, 50%);">
+                            <div class="absolute -top-8 bg-white b-border px-2 py-1 text-xs font-bold whitespace-nowrap text-dark">Stripe</div>
+                        </div>
+
+                        <!-- Razorpay -->
+                        <div class="absolute w-10 h-10 bg-primary border-4 border-dark z-30 flex justify-center items-center shadow-[4px_4px_0px_#1A1A1A] animate-pulse" style="left: 90%; bottom: 90%; transform: translate(-50%, 50%);">
+                            <div class="absolute -top-10 bg-white b-border px-3 py-1 text-sm font-bold whitespace-nowrap text-primary">Razorpay</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: SWOT & DRIVERS -->
+    <section class="section-container bg-dark text-white" id="slide-4">
+        <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-5 gap-8">
+            
+            <!-- SWOT GRID (3 Cols) -->
+            <div class="lg:col-span-3 grid grid-cols-2 gap-4">
+                <div class="col-span-2 mb-4">
+                    <h2 class="font-display text-4xl bg-white text-primary inline-block p-4 b-border shadow-[6px_6px_0px_#FFFFFF]">SWOT Matrix</h2>
+                </div>
+                
+                <!-- Strengths -->
+                <div class="bg-[#1e293b] p-6 b-border border-primary relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-primary opacity-20 rounded-bl-full"></div>
+                    <h3 class="font-display text-xl mb-4 text-primary">Strengths</h3>
+                    <ul class="text-sm space-y-2 list-disc pl-4">
+                        <li>Most comprehensive Indian fintech stack (Gateway + X + Forge).</li>
+                        <li>Developer-first architecture & fast integration.</li>
+                        <li>RazorpayX payout network enables instant settlement.</li>
+                    </ul>
+                </div>
+
+                <!-- Weaknesses -->
+                <div class="bg-[#3f2c00] p-6 b-border border-warning relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-16 h-16 bg-warning opacity-20 rounded-br-full"></div>
+                    <h3 class="font-display text-xl mb-4 text-warning">Weaknesses</h3>
+                    <ul class="text-sm space-y-2 list-disc pl-4">
+                        <li>Enterprise perception gap vs. traditional banks.</li>
+                        <li>Cross-border scale developing vs. global players.</li>
+                        <li>UPI zero-fee margin compression.</li>
+                    </ul>
+                </div>
+
+                <!-- Opportunities -->
+                <div class="bg-[#1a2f24] p-6 b-border border-accent relative overflow-hidden">
+                    <div class="absolute bottom-0 right-0 w-16 h-16 bg-accent opacity-20 rounded-tl-full"></div>
+                    <h3 class="font-display text-xl mb-4 text-accent">Opportunities</h3>
+                    <ul class="text-sm space-y-2 list-disc pl-4">
+                        <li>Embedded credit & working capital via transaction data.</li>
+                        <li>Cross-border enablement for Indian exporters.</li>
+                        <li>AI payment routing premium tier.</li>
+                    </ul>
+                </div>
+
+                <!-- Threats -->
+                <div class="bg-[#4a1010] p-6 b-border border-red-500 relative overflow-hidden">
+                    <div class="absolute bottom-0 left-0 w-16 h-16 bg-red-500 opacity-20 rounded-tr-full"></div>
+                    <h3 class="font-display text-xl mb-4 text-red-500">Threats</h3>
+                    <ul class="text-sm space-y-2 list-disc pl-4">
+                        <li>PhonePe/Paytm ecosystem scale.</li>
+                        <li>Stripe localization in India.</li>
+                        <li>RBI regulatory shifts on payments intermediation.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Actionable Drivers (2 Cols) -->
+            <div class="lg:col-span-2 flex flex-col gap-6 pt-16">
+                <h3 class="font-display text-2xl mb-2 text-paper uppercase">Actionable Drivers</h3>
+                
+                <div class="bg-white text-dark p-5 b-border b-shadow border-t-8 border-t-primary">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-feather="users" class="text-primary"></i>
+                        <h4 class="font-display text-lg">User Driver</h4>
+                    </div>
+                    <p class="font-bold text-sm mb-3">Businesses need reliable success rates + instant liquidity.</p>
+                    <p class="text-xs bg-paper p-2 b-border text-dark"><strong>So What:</strong> Lead sales with "Revenue Assurance Suite" positioning.</p>
+                </div>
+
+                <div class="bg-white text-dark p-5 b-border b-shadow border-t-8 border-t-secondary">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-feather="cpu" class="text-secondary"></i>
+                        <h4 class="font-display text-lg">Product Driver</h4>
+                    </div>
+                    <p class="font-bold text-sm mb-3">API maturity + RazorpayX + Data Underwriting.</p>
+                    <p class="text-xs bg-paper p-2 b-border text-dark"><strong>So What:</strong> Invest in pre-built vertical connectors and developer community.</p>
+                </div>
+
+                <div class="bg-white text-dark p-5 b-border b-shadow border-t-8 border-t-accent">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i data-feather="trending-up" class="text-accent"></i>
+                        <h4 class="font-display text-lg">Market Driver</h4>
+                    </div>
+                    <p class="font-bold text-sm mb-3">Digital Commerce 20-25% YoY + Cross-Border Growth.</p>
+                    <p class="text-xs bg-paper p-2 b-border text-dark"><strong>So What:</strong> Build cross-border & embedded finance as dedicated growth engines.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: INSIGHT & OPPORTUNITY ZONES -->
+    <section class="section-container bg-paper bg-[radial-gradient(#d1d5db_1px,transparent_1px)]" style="background-size: 20px 20px;" id="slide-5">
+        <div class="max-w-6xl mx-auto w-full">
+            
+            <!-- Insight Box -->
+            <div class="bg-white p-8 md:p-12 b-border b-shadow border-primary relative mb-16 mx-auto max-w-4xl">
+                <div class="stamp bg-primary text-white" style="top: -20px; left: -20px; transform: rotate(-12deg);">KEY INSIGHT</div>
+                <p class="font-display text-2xl md:text-3xl leading-snug text-dark">
+                    Razorpay built the infrastructure, but gateway margins are compressing. The unlock is moving from "transaction processor" to <span class="bg-primary text-white px-2">Revenue Operations Partner</span> — using data, AI, and RazorpayX liquidity to offer embedded credit, intelligent routing, and global enablement.
+                </p>
+            </div>
+
+            <!-- Opportunity Zones -->
+            <h2 class="font-display text-3xl mb-8 text-center uppercase border-y-4 border-dark py-4 bg-white b-border mx-auto max-w-sm b-shadow text-dark">Actionable Zones</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <div class="bg-white p-6 b-border b-shadow border-secondary relative group hover:-translate-y-2 transition-transform duration-200">
+                    <div class="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center mb-4 b-border">
+                        <i data-feather="activity"></i>
+                    </div>
+                    <h3 class="font-display text-xl mb-3 text-dark">Revenue Assurance Suite</h3>
+                    <p class="text-sm mb-4 text-dark">Dynamic issuer routing, intelligent retry logic, and transaction-data-backed working capital.</p>
+                    <p class="text-xs bg-paper p-2 b-border text-dark"><strong>So What:</strong> Position as "Guaranteed Success Rate + Instant Liquidity".</p>
+                </div>
+
+                <div class="bg-white p-6 b-border b-shadow border-primary relative transform md:-translate-y-4 shadow-[8px_8px_0px_#3399FF]">
+                    <div class="stamp bg-warning text-dark border-2 border-dark px-2 py-0 text-sm" style="top: -10px; right: -10px; transform: rotate(12deg);">EXPLORE</div>
+                    <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mb-4 b-border">
+                        <i data-feather="globe"></i>
+                    </div>
+                    <h3 class="font-display text-xl mb-3 text-dark">Cross-Border Enablement</h3>
+                    <p class="text-sm mb-4 text-dark">Localized acquiring, real-time FX optimization, automated compliance for Indian SaaS/D2C.</p>
+                    <p class="text-xs bg-paper p-2 b-border text-dark"><strong>So What:</strong> Capture the $15B+ global expansion opportunity.</p>
+                </div>
+
+                <div class="bg-white p-6 b-border b-shadow border-accent relative group hover:-translate-y-2 transition-transform duration-200">
+                    <div class="w-12 h-12 bg-accent text-dark rounded-full flex items-center justify-center mb-4 b-border">
+                        <i data-feather="box"></i>
+                    </div>
+                    <h3 class="font-display text-xl mb-3 text-dark">BaaS Ecosystem</h3>
+                    <p class="text-sm mb-4 text-dark">White-label RazorpayX + Forge for marketplaces and fintechs.</p>
+                    <p class="text-xs bg-paper p-2 b-border text-dark"><strong>So What:</strong> Charge licensing + take-rate on embedded financial products.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: CTA -->
+    <section class="section-container bg-secondary text-white flex justify-center items-center" id="slide-6">
+        <div class="bg-white text-dark p-0 b-border max-w-2xl w-full text-center shadow-[12px_12px_0px_#3399FF] relative">
+            
+            <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-accent text-dark font-bold text-xs uppercase px-4 py-2 b-border shadow-[4px_4px_0px_#1A1A1A] whitespace-nowrap transform -rotate-2 z-10">
+                I have some rough thoughts on rev-ops frameworks — happy to share if useful.
+            </div>
+
+            <div class="h-2 w-full bg-primary border-b-4 border-dark"></div>
+            
+            <div class="p-10 md:p-16">
+                <h2 class="font-display text-3xl md:text-4xl mb-6 uppercase text-primary">This is a space I'd genuinely love to explore deeper.</h2>
+                <p class="text-lg mb-12 text-dark leading-relaxed">I'm currently looking for a <span class="bg-accent text-dark px-2 py-1 font-bold b-border">Summer Product Internship 2026</span>, and would be excited to work on problems like this with your team.</p>
+                
+                <div class="flex flex-col md:flex-row justify-center gap-6 mb-12">
+                    <a href="https://www.linkedin.com/in/kunjharjai/" target="_blank" class="bg-secondary text-white px-6 py-4 b-border b-shadow-hover font-bold uppercase flex items-center justify-center gap-2">
+                        LinkedIn <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="https://calendly.com/kunjharjai13/30min" target="_blank" class="bg-primary text-white px-6 py-4 b-border b-shadow-hover font-bold uppercase flex items-center justify-center gap-2">
+                        Schedule a 15-min Chat <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <div class="bg-paper p-4 b-border text-left inline-block text-dark">
+                    <p class="font-display font-bold text-xl mb-1">Kunj Harjai</p>
+                    <p class="text-sm font-mono mb-1">Kunj.24141@sscbs.du.ac.in</p>
+                    <p class="text-sm font-mono">+91 93 109 29 096</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Icons
+        feather.replace();
+
+        // Intersection Observer for Slide 2 Animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+
+            const chartObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Animate Pie Chart
+                        const pie = entry.target.querySelector('.pie-chart');
+                        if(pie) pie.classList.add('active');
+
+                        // Animate Bars
+                        const bars = entry.target.querySelectorAll('.chart-bar');
+                        bars.forEach(bar => {
+                            bar.style.height = bar.getAttribute('data-height');
+                        });
+
+                        // Animate Fills
+                        const fills = entry.target.querySelectorAll('.chart-fill');
+                        fills.forEach(fill => {
+                            fill.style.width = fill.getAttribute('data-width');
+                        });
+
+                        // Animate Matrix
+                        const matrixElements = entry.target.querySelectorAll('.matrix-animate');
+                        matrixElements.forEach(el => {
+                            el.classList.add('active');
+                            if(el.tagName === 'path') {
+                                el.classList.remove('opacity-0');
+                            }
+                            if(el.tagName === 'DIV' && el.classList.contains('opacity-0')) {
+                                el.classList.remove('opacity-0');
+                            }
+                        });
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const slide2 = document.getElementById('slide-2');
+            if(slide2) {
+                chartObserver.observe(slide2);
+            }
+        });
+    </script>
+</body>
+</html>
